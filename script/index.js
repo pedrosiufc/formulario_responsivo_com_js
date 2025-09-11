@@ -1,3 +1,29 @@
+//pegando o formulário por id
+const form = document.querySelector('#form')
+
+form.addEventListener('submit', function(event){
+    //evitando recarregar a página
+    event.preventDefault();
+
+    const name = document.querySelector('#name');
+    // pega o inputBox que estiver perto
+    const inputBox = name.closest('.input-box');
+    const nameValue = name.value;
+    // colocando icone de erro
+    const errorIcon = '<i class="fa-solid fa-circle-exclamation"></i>';
+    const errorSpan = inputBox.querySelector('.error');
+   
+    if(isEmpty(nameValue)){
+        errorSpan.innerHTML = `${errorIcon} O campo é obrigatório!`
+    }
+})
+
+// criando uma função para verificar campo está preenchido passando o valor do campo
+function isEmpty(nameValue){
+    return nameValue === '';
+}
+
+
 // pegando a classe password-icon no html
 const passwordsIcons = document.querySelectorAll('.password-icon');
 // pegando o click de mostrar as senhas

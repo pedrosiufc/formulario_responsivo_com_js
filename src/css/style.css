@@ -151,6 +151,15 @@ input:-webkit-autofill{
     accent-color: #6366f1;
 } 
 
+.error{
+    color: #dc2626;
+    font-size: 12px;
+    margin-top: 4px;
+    /* limitar o tamnho da mensagem */
+    max-width: 200px;
+}
+
+
 @media screen and (max-width: 500px){
     #form_container{
         width: 100%;
