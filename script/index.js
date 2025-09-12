@@ -12,15 +12,35 @@ form.addEventListener('submit', function(event){
     // colocando icone de erro
     const errorIcon = '<i class="fa-solid fa-circle-exclamation"></i>';
     const errorSpan = inputBox.querySelector('.error');
-   
-    if(isEmpty(nameValue)){
+    // evitando colocar if e else
+    errorSpan.innerHTML = '';
+
+    // removendo a classList invalid
+    inputBox.classList.remove('invalid');
+    inputBox.classList.add('valid');
+
+    if(!nameIsValid(nameValue)){
         errorSpan.innerHTML = `${errorIcon} O campo é obrigatório!`
+        // pegando as cores dos input-box
+        inputBox.classList.add('invalid');
+        inputBox.classList.remove('valid');
+        return;
     }
 })
 
 // criando uma função para verificar campo está preenchido passando o valor do campo
 function isEmpty(nameValue){
     return nameValue === '';
+}
+
+function nameIsValid(value){
+  let isValid = true;
+
+  if (isEmpty(value)){
+    return isValid = false;
+    return isValid;
+  }
+  return isValid;
 }
 
 
