@@ -19,8 +19,9 @@ form.addEventListener('submit', function(event){
     inputBox.classList.remove('invalid');
     inputBox.classList.add('valid');
 
-    if(!nameIsValid(nameValue)){
-        errorSpan.innerHTML = `${errorIcon} O campo é obrigatório!`
+    //checando se o nome está validado
+    if(!nameIsValid(nameValue).isValid){
+        errorSpan.innerHTML = `${errorIcon} ${nameIsValid(nameValue).errorMessage}`;
         // pegando as cores dos input-box
         inputBox.classList.add('invalid');
         inputBox.classList.remove('valid');
@@ -32,15 +33,28 @@ form.addEventListener('submit', function(event){
 function isEmpty(nameValue){
     return nameValue === '';
 }
-
+//verificando se o nome é válido
 function nameIsValid(value){
-  let isValid = true;
+  //criando um objeto para retornar
+  const validator =  {
+    isValid: true,
+    errorMessage: null
+  };
 
   if (isEmpty(value)){
-    return isValid = false;
-    return isValid;
+      validator.isValid = false;
+      validator.errorMessage = 'O campo é obrigatório'
+      return validator;
   }
-  return isValid;
+
+  const min = 3;
+
+  if(value.length < min){
+    validator.isValid = false;
+    validator.errorMessage = `O nome deve ter no mínimo ${min} caracteres`;
+    return validator;
+  }
+  return validator;
 }
 
 
