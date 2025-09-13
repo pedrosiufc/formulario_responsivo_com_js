@@ -5,28 +5,41 @@ form.addEventListener('submit', function(event){
     //evitando recarregar a página
     event.preventDefault();
 
-    const name = document.querySelector('#name');
-    // pega o inputBox que estiver perto
-    const inputBox = name.closest('.input-box');
-    const nameValue = name.value;
-    // colocando icone de erro
+    const fields = [
+      {
+        id: 'name',
+        label: 'Nome',
+        validator: nameIsValid,
+        },
+        {
+          id: 'last_name',
+          label: 'Sobrenome',
+          validator: nameIsValid
+        },
+      ]
+
+      // colocando icone de erro
     const errorIcon = '<i class="fa-solid fa-circle-exclamation"></i>';
-    const errorSpan = inputBox.querySelector('.error');
-    // evitando colocar if e else
-    errorSpan.innerHTML = '';
 
-    // removendo a classList invalid
-    inputBox.classList.remove('invalid');
-    inputBox.classList.add('valid');
-
-    //checando se o nome está validado
-    if(!nameIsValid(nameValue).isValid){
-        errorSpan.innerHTML = `${errorIcon} ${nameIsValid(nameValue).errorMessage}`;
-        // pegando as cores dos input-box
-        inputBox.classList.add('invalid');
-        inputBox.classList.remove('valid');
-        return;
-    }
+    fields.forEach(function (field)  {
+      const input = document.getElementById(field.id);
+      const inputBox = input.closest('.input-box');
+      const inputValue = input.value;
+      
+      const errorSpan = inputBox.querySelector('.error');
+      errorSpan.innerHTML = '';
+      inputBox.classList.remove('invalid');
+      inputBox.classList.add('valid');
+      //checando se o nome está validado
+      const fieldValidator = field.validator(inputValue);
+      if(!fieldValidator.isValid){
+          errorSpan.innerHTML = `${errorIcon} ${fieldValidator.errorMessage}`;
+          // pegando as cores dos input-box
+          inputBox.classList.add('invalid');
+          inputBox.classList.remove('valid');
+          return;
+      }
+    })
 })
 
 // criando uma função para verificar campo está preenchido passando o valor do campo
@@ -52,6 +65,12 @@ function nameIsValid(value){
   if(value.length < min){
     validator.isValid = false;
     validator.errorMessage = `O nome deve ter no mínimo ${min} caracteres`;
+    return validator;
+  }
+  const regex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/;
+  if(!regex.test(value)){
+    validator.isValid = false;
+    validator.errorMessage = 'O nome deve conter apenas letras e espaços';
     return validator;
   }
   return validator;
