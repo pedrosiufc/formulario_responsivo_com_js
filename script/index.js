@@ -16,6 +16,12 @@ form.addEventListener('submit', function(event){
           label: 'Sobrenome',
           validator: nameIsValid
         },
+        {
+          id: 'birthdate',
+          label: 'Nascimento',  
+          validator: dateIsValid
+        },
+        
       ]
 
       // colocando icone de erro
@@ -76,6 +82,25 @@ function nameIsValid(value){
   return validator;
 }
 
+//verificando se a data é válida
+function dateIsValid(value){
+  const validator =  {
+    isValid: true,
+    errorMessage: null 
+  }
+  if(isEmpty(value)){
+    validator.isValid = false;
+    validator.errorMessage = 'O nascimento é obrigatório';
+    return validator;
+  } 
+  const year = new Date(value).getFullYear();
+  if(year < 1920 || year > new Date().getFullYear()){
+    validator.isValid = false;
+    validator.errorMessage = 'Data inválida';
+    return validator;
+  }
+  return validator;
+}
 
 // pegando a classe password-icon no html
 const passwordsIcons = document.querySelectorAll('.password-icon');
